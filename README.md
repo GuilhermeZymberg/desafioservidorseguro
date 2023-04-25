@@ -7,5 +7,7 @@ Finalmente, o sistema envia um email ao email cadastrado contendo um código de 
 e verifica se o código que o usuário inserir é o mesmo que o gerado. Assim, o financiamento
 seria autorizado e o cliente poderia pagar a entrada.
 
+Qualquer falha na autenticação volta para a página inicial
+
 O servidor é protegido de ataques SQL Injection por utilisar de SQLAlchemy, que protege
 as buscas codificadas (desde que não se utilize SQL puro, o que não é o caso deste código)
