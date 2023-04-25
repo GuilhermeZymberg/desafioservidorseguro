@@ -51,6 +51,20 @@ def index():
             return redirect(url_for("cadastro"))
     else:
         return render_template("index.html")
+@app.route('/cadastro',methods= ["GET", "POST"])
+def cadastro():
+    if request.method == 'POST':
+        nome = request.form["nome"]
+        cpf = request.form["cpf"]
+        login = request.form["login"]
+        senha = request.form["senha"]
+        usr = Tabela(cpf,nome,login,senha)
+        if(not (db.session.query(Tabela.cpf).exists)):
+            db.session.add(usr)
+            db.session.commit()
+        return redirect(url_for("index"))
+    else:    
+        return render_template("cadastro.html")
 @app.route("/login", methods= ["GET", "POST"])
 def login():
     cpf = session.get("cpf",None)
@@ -80,26 +94,17 @@ def login():
                 """
                 mime = MIMEText(texto,"plain")
                 message.attach(mime)
-                server.sendmail(login,login, message.as_string())
+                try:   
+                    server.sendmail(login,login, message.as_string())
+                except:
+                    return redirect(url_for("index"))
                 session['code'] = code
             return redirect(url_for("fa"))
         else:
-            return render_template("login.html")
+            return redirect(url_for("index"))
     else:
         return render_template("login.html")
-@app.route('/cadastro',methods= ["GET", "POST"])
-def cadastro():
-    if request.method == 'POST':
-        nome = request.form["nome"]
-        cpf = request.form["cpf"]
-        login = request.form["login"]
-        senha = request.form["senha"]
-        usr = Tabela(cpf,nome,login,senha)
-        db.session.add(usr)
-        db.session.commit()
-        return redirect(url_for("index"))
-    else:    
-        return render_template("cadastro.html")
+
 @app.route('/fa', methods= ["GET", "POST"])
 def fa():
     if request.method == "POST":
@@ -108,11 +113,12 @@ def fa():
         if(codigo == code):
             return redirect(url_for("success"))
         else:
-            return render_template("fa.html")
+            return redirect(url_for("index"))
     else:
         return render_template("fa.html")
 @app.route('/success', methods= ["GET", "POST"])
 def success():
     return render_template("success.html")
+
 if __name__ == "__main__":
     app.run()
