@@ -11,3 +11,6 @@ Qualquer falha na autenticação volta para a página inicial
 
 O servidor é protegido de ataques SQL Injection por utilisar de SQLAlchemy, que protege
 as buscas codificadas (desde que não se utilize SQL puro, o que não é o caso deste código)
+
+Caso o código não funcione, é porque parte dele se basea em um login no meu e-mail pessoal que estava no banco de dados,
+o que deletei por motivos de privacidade
